@@ -6,19 +6,33 @@ pipeline {
         string(name: 'version', defaultValue: '', description: 'Version variable to pass to Terraform')
         booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
     }
-
-
+    
+   
     environment {
-        TF_WORKSPACE = 'dev' //Sets the Terraform Workspace
-        TF_IN_AUTOMATION = 'true'
-        }
+	TF_WORKSPACE = 'dev' //Sets the Terraform Workspace
+    	TF_IN_AUTOMATION = 'true'
+	}
     stages {
         stage('Plan') {
             steps {
                 script {
                     currentBuild.displayName = params.version
                 }
+                sh 'terraform init -input=false'
+              
+                sh "terraform plan -input=false"
+                
+            }
+        }
+
+        
+
+        stage('Apply') {
+            steps {
+                sh "terraform apply -auto-approve -no-color"
+            }
+        }
+    }
 }
-}
-}
-}
+
+   
