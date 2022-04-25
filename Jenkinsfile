@@ -18,4 +18,7 @@ pipeline {
                 script {
                     currentBuild.displayName = params.version
                 }
+}
+}
+}
 
