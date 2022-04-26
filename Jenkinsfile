@@ -4,25 +4,23 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-            checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/vysaghkrishnan/ElasticK8s.git']]])  
-     stages {
-	 stage("terraform init") {
+            checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/vysaghkrishnan/ElasticK8s.git']]])            
+
+          }
+        }
+        
+        stage ("terraform init") {
             steps {
                 sh ('terraform init') 
             }
         }
         
-        stages {
-	    stage ("terraform Action") {
-              steps {
+        stage ("terraform Action") {
+            steps {
                 echo "Terraform action is --> ${action}"
                 sh ('terraform ${action} --auto-approve') 
            }
         }
     }
-   }
-}
 }
 
-}
-}
