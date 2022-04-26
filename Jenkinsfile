@@ -1,17 +1,10 @@
 pipeline {
     agent any
 
-    parameters {
-        string(name: 'environment', defaultValue: 'default', description: 'Workspace/environment file to use for deployment')
-        string(name: 'version', defaultValue: '', description: 'Version variable to pass to Terraform')
-        booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
-    }
-    
-   
-    environment {
-	TF_WORKSPACE = 'dev' //Sets the Terraform Workspace
-    	TF_IN_AUTOMATION = 'true'
-	}
+    stages {
+        stage('Checkout') {
+            steps {
+            checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/vysaghkrishnan/ElasticK8s.git']]])  
      stage ("terraform init") {
             steps {
                 sh ('terraform init') 
@@ -25,4 +18,4 @@ pipeline {
            }
         }
     }
-   
+   }
