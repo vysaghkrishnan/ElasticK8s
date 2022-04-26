@@ -12,27 +12,17 @@ pipeline {
 	TF_WORKSPACE = 'dev' //Sets the Terraform Workspace
     	TF_IN_AUTOMATION = 'true'
 	}
-    stages {
-        stage('Plan') {
+     stage ("terraform init") {
             steps {
-                script {
-                    currentBuild.displayName = params.version
-                }
-                sh 'terraform init -input=false'
-              
-                sh "terraform plan -input=false"
-                
+                sh ('terraform init') 
             }
         }
-
         
-
-        stage('Apply') {
+        stage ("terraform Action") {
             steps {
-                sh "terraform apply -auto-approve -no-color"
-            }
+                echo "Terraform action is --> ${action}"
+                sh ('terraform ${action} --auto-approve') 
+           }
         }
     }
-}
-
-   
+}   
